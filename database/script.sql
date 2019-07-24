@@ -21,6 +21,19 @@ CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
 USE `mydb` ;
 
 -- -----------------------------------------------------
+-- Table `mydb`.`Municipios`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Municipios` (
+  `idMunicipios` INT NOT NULL,
+  `Municipio` VARCHAR(45) NULL,
+  `longitud` FLOAT NULL,
+  `latitud` FLOAT NULL,
+  `altitud` FLOAT NULL,
+  PRIMARY KEY (`idMunicipios`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `mydb`.`Departamentos`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Departamentos` (
@@ -29,7 +42,14 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Departamentos` (
   `longitud` FLOAT NULL,
   `latitud` FLOAT NULL,
   `altitud` VARCHAR(45) NULL,
-  PRIMARY KEY (`id`))
+  `Municipios_idMunicipios` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_Departamentos_Municipios1_idx` (`Municipios_idMunicipios` ASC) ,
+  CONSTRAINT `fk_Departamentos_Municipios1`
+    FOREIGN KEY (`Municipios_idMunicipios`)
+    REFERENCES `mydb`.`Municipios` (`idMunicipios`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -111,27 +131,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`ranking` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `mydb`.`Municipios`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Municipios` (
-  `idMunicipios` INT NOT NULL,
-  `Municipio` VARCHAR(45) NULL,
-  `longitud` FLOAT NULL,
-  `latitud` FLOAT NULL,
-  `altitud` FLOAT NULL,
-  `Departamentos_id` INT NOT NULL,
-  PRIMARY KEY (`idMunicipios`),
-  INDEX `fk_Municipios_Departamentos1_idx` (`Departamentos_id` ASC) ,
-  CONSTRAINT `fk_Municipios_Departamentos1`
-    FOREIGN KEY (`Departamentos_id`)
-    REFERENCES `mydb`.`Departamentos` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-
